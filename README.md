@@ -16,10 +16,10 @@ $ pip install .
 - [x] Moving the currently loaded VTS model
 - [x] Requesting list of hotkeys available in current or other VTS model
 - [x] Requesting execution of hotkeys
-- [ ] Requesting list of expressions and their states
-- [ ] Requesting activation/deactivation of expressions
-- [ ] Requesting list of ArtMeshes in current model
-- [ ] Tint ArtMeshes with color
+- [x] Requesting list of expressions and their states
+- [x] Requesting activation/deactivation of expressions
+- [x] Requesting list of ArtMeshes in current model
+- [x] Tint ArtMeshes with color
 - [ ] Getting scene lighting overlay color
 - [ ] Checking if face is currently found by tracker
 - [ ] Requesting list of available tracking parameters

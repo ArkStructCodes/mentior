@@ -61,10 +61,10 @@ class AvailableModels(FromCamel):
 
 
 class Position(FromCamel):
-    position_x: Optional[float] = Field(default=None, ge=-1, le=1)
-    position_y: Optional[float] = Field(default=None, ge=-1, le=1)
-    rotation: Optional[float] = Field(default=None, ge=-360, le=360)
-    size: Optional[float] = Field(default=-80, ge=-100, le=100)
+    position_x: Optional[float] = Field(ge=-1, le=1)
+    position_y: Optional[float] = Field(ge=-1, le=1)
+    rotation: Optional[float] = Field(ge=-360, le=360)
+    size: Optional[float] = Field(ge=-100, le=100)
 
 
 class CurrentModel(VTSModel):
@@ -82,7 +82,7 @@ class CurrentModel(VTSModel):
 
 
 class MoveModel(Position):
-    position_z: Optional[float] = Field(default=None, ge=-1, le=1)
+    position_z: Optional[float] = Field(ge=-1, le=1)
     time_in_seconds: float = Field(ge=0, le=2)
     values_are_relative_to_model: bool
 
@@ -104,3 +104,64 @@ class Hotkeys(ModelID):
     model_loaded: bool
     model_name: str
     available_hotkeys: List[Hotkey]
+
+
+class HotkeyInfo(BaseModel):
+    name: str
+    id: str
+
+
+class ExpressionParam(BaseModel):
+    name: str
+    value: float
+
+
+class Expression(FromCamel):
+    name: str
+    file: str
+    active: bool
+    deactivate_when_key_is_let_go: bool
+    auto_deactivate_after_seconds: bool
+    seconds_remaining: int
+    used_in_hotkeys: List[HotkeyInfo]
+    parameters: List[ExpressionParam]
+
+
+class ExpressionState(ModelID):
+    model_loaded: bool
+    model_name: str
+    expressions: List[Expression]
+
+
+class ArtMeshes(FromCamel):
+    model_loaded: bool
+    number_of_art_mesh_names: int
+    number_of_art_mesh_tags: int
+    art_mesh_names: List[str]
+    art_mesh_tags: List[str]
+
+
+class ColorTint(FromCamel):
+    color_r: int = Field(default=255, ge=0, le=255)
+    color_g: int = Field(default=255, ge=0, le=255)
+    color_b: int = Field(default=255, ge=0, le=255)
+    color_a: int = Field(default=255, ge=0, le=255)
+    mix_with_scene_lighting_color: float = Field(default=1, ge=0, le=1)
+
+
+class ArtMeshMatcher(FromCamel):
+    tint_all: bool = False
+    art_mesh_number: Optional[List[int]] = None
+    name_exact: Optional[List[str]] = None
+    name_contains: Optional[List[str]] = None
+    tag_exact: Optional[List[str]] = None
+    tag_contains: Optional[List[str]] = None
+
+
+class ArtmeshTint(FromCamel):
+    color_tint: ColorTint
+    art_mesh_matcher: ArtMeshMatcher
+
+
+class TintedArtMeshes(FromCamel):
+    matched_art_meshes: int
