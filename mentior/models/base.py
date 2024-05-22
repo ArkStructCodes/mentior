@@ -27,6 +27,7 @@ class ToCamel(BaseModel):
 
     model_config = ConfigDict(
         alias_generator=AliasGenerator(serialization_alias=to_camel),
+        protected_namespaces=(),
     )
 
 
@@ -35,6 +36,7 @@ class FromCamel(BaseModel):
 
     model_config = ConfigDict(
         alias_generator=AliasGenerator(validation_alias=to_camel),
+        protected_namespaces=(),
     )
 
 
@@ -48,15 +50,15 @@ class Metadata(BaseModel):
     model_config = ConfigDict(frozen=True)
 
 
-class Request(Metadata, ToCamel, Generic[MessageT]):
+class Request(Metadata, ToCamel, Generic[MessageT, DataT]):
     """Base class for all request models.
 
     Generic parameter `MessageT` Must be a supported literal.
-    This does not perform any data validation.
+    Data validation can be skipped by passing in a dict.
     """
 
     message_type: MessageT
-    data: Optional[Dict[str, Any]]
+    data: Optional[Union[Dict[str, Any], DataT]]
 
 
 class Response(Metadata, FromCamel, Generic[MessageT, DataT]):
